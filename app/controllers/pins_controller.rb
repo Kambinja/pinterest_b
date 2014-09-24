@@ -8,7 +8,6 @@ class PinsController < ApplicationController
   end
 
   # GET /pins/1
-  # GET /pins/1.json
   def show
   end
 
@@ -26,33 +25,27 @@ class PinsController < ApplicationController
   def create
     @pin = Pin.new(pin_params)
 
-    respond_to do |format|
       if @pin.save
-        redirect_to @pin, notice: 'Pin was successfully created.' }
+        redirect_to @pin, notice: 'Pin was successfully created.'
       else
         render action: 'new' 
     end
   end
 
   # PATCH/PUT /pins/1
-  # PATCH/PUT /pins/1.json
   def update
-    respond_to do |format|
       if @pin.update(pin_params)
-        redirect_to @pin, notice: 'Pin was successfully updated.' }
+        redirect_to @pin, notice: 'Pin was successfully updated.'
       else
         render action 'edit' 
       end
     end
   
   # DELETE /pins/1
-  # DELETE /pins/1.json
   def destroy
     @pin.destroy
-    respond_to do |format|
-      redirect_to pins_url, notice: 'Pin was successfully destroyed.' }
+      redirect_to pins_url
     end
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -60,8 +53,8 @@ class PinsController < ApplicationController
       @pin = Pin.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+   # Never trust parameters from the scary internet, only allow the white list through.
     def pin_params
       params.require(:pin).permit(:description)
     end
-end
+  end
