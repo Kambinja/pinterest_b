@@ -1,51 +1,44 @@
 class PinsController < ApplicationController
   before_action :set_pin, only: [:show, :edit, :update, :destroy]
-
-  # GET /pins
-  # GET /pins.json
+  before_action :authenticate_user!, except: [:index, :show]
+ 
   def index
     @pins = Pin.all
   end
 
-  # GET /pins/1
   def show
   end
 
-  # GET /pins/new
   def new
-    @pin = Pin.new
+    @pin = current_user.pins.build
   end
 
-  # GET /pins/1/edit
   def edit
   end
 
-  # POST /pins
-  # POST /pins.json
   def create
-    @pin = Pin.new(pin_params)
+    @pin = current_user.pins.build(pin_params)
 
       if @pin.save
         redirect_to @pin, notice: 'Pin was successfully created.'
       else
-        render action: 'new' 
-    end
-  end
-
-  # PATCH/PUT /pins/1
-  def update
-      if @pin.update(pin_params)
-        redirect_to @pin, notice: 'Pin was successfully updated.'
-      else
-        render action 'edit' 
+        render action:'new' 
       end
     end
-  
-  # DELETE /pins/1
+
+  def update
+      if @pin.update(pin_params)
+         redirect_to @pin, notice: 'Pin was successfully updated.'
+      else
+        render action: 'edit'
+      end
+    end
+
   def destroy
     @pin.destroy
-      redirect_to pins_url
+    redirect_to pins_url 
     end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -53,8 +46,8 @@ class PinsController < ApplicationController
       @pin = Pin.find(params[:id])
     end
 
-   # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white list through.
     def pin_params
       params.require(:pin).permit(:description)
     end
-  end
+end
